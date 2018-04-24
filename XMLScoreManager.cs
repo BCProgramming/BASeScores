@@ -15,6 +15,7 @@ namespace BASeCamp.BASeScores
     {
         Dictionary<String, XMLHighScores<T>> LoadedScoreSets = new Dictionary<string, XMLHighScores<T>>();
         public Func<string, XMLHighScores<T>> NewScoreListGenerator = GenerateNewScoreList;
+        private String _FileName = null;
         public XMLScoreManager(XElement Source,Object context)
         {
             LoadFromXElement(Source,context);
@@ -32,8 +33,29 @@ namespace BASeCamp.BASeScores
                 LoadedScoreSets.Add(buildscoreset.Name,buildscoreset);
             }
         }
+        public static XMLScoreManager<T> FromFile(String sFileName)
+        {
+            if (String.IsNullOrEmpty(sFileName) || !File.Exists(sFileName)) return null;
+            return new XMLScoreManager<T>(sFileName);
+        }
+        ~XMLScoreManager()
+        {
+            Save(_FileName);
+        }
+        public void Save()
+        {
+            Save(_FileName);
+        }
+        public void Save(String pTargetFile)
+        {
+            if (String.IsNullOrEmpty(pTargetFile)) return;
+            XDocument buildDocument = new XDocument();
+            buildDocument.Add(GetXmlData("HighScores",null));
+            buildDocument.Save(pTargetFile);
+        }
         public XMLScoreManager(String pFileName)
         {
+            _FileName = pFileName;
             if (File.Exists(pFileName))
             {
                 XDocument loadDocument = XDocument.Load(pFileName);

@@ -18,6 +18,10 @@ namespace BASeCamp.BASeScores
         {
 
         }
+        public HighScoreNullCustomData()
+        {
+
+        }
         public XElement GetXmlData(String pNodeName,object context)
         {
             return new XElement(pNodeName);
