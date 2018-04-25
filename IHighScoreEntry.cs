@@ -14,7 +14,7 @@ namespace BASeCamp.BASeScores
     }
     public class HighScoreNullCustomData : IHighScoreEntryCustomData
     {
-        public HighScoreNullCustomData(XElement Source)
+        public HighScoreNullCustomData(XElement Source,object pContext)
         {
 
         }

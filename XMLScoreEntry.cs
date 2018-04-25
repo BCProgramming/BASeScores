@@ -35,7 +35,7 @@ namespace BASeCamp.BASeScores
             XElement ExtraNode = SourceNode.Element("Extra");
             if(ExtraNode!=null)
             {
-                CustomData = (T)Activator.CreateInstance(typeof(T), 0, (object)ExtraNode, (object)null);
+                CustomData = (T)Activator.CreateInstance(typeof(T), (XElement)ExtraNode, (object)null);
             }
             Name = sName;
             Score = iScore;
