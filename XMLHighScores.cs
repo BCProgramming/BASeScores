@@ -76,12 +76,16 @@ namespace BASeCamp.BASeScores
                 ScoreEntries.Add(newEntry.Score,newEntry);
             }
         }
-        public IEnumerable<IHighScoreEntry<T>> GetScores()
+        public IEnumerable<IHighScoreEntry<T>> GetScoresEx()
         {
             foreach(var iterate in ScoreEntries)
             {
                 yield return iterate.Value;
             }
+        }
+        public IEnumerable<IHighScoreEntry> GetScores()
+        {
+            return GetScoresEx();
         }
 
         public int IsEligible(int Score)
@@ -98,12 +102,27 @@ namespace BASeCamp.BASeScores
                 return -1;
             }
         }
-
+        public IHighScoreEntry Submit(String pName,int Score)
+        {
+            return Submit(pName, Score, default(T));
+        }
+        public IHighScoreEntry Submit(IHighScoreEntry newEntry)
+        {
+            
+            IHighScoreEntry<T> casted = newEntry as IHighScoreEntry<T>;
+            if (casted != null)
+            {
+                return Submit(casted.Name, casted.Score, casted.CustomData);
+            }
+            return Submit(newEntry.Name, newEntry.Score);
+            
+        }
         public IHighScoreEntry<T> Submit(string pName, int Score, T ScoreData)
         {
             XMLScoreEntry<T> buildentry = new XMLScoreEntry<T>(pName, Score, ScoreData);
             int eligibleresult = IsEligible(Score);
             if (eligibleresult == -1) return null;
+
             ScoreEntries.Add(Score,buildentry);
 
             //until we have MaximumSize items, remove the item with the smallest score.

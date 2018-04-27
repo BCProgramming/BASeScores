@@ -12,16 +12,9 @@ namespace BASeCamp.BASeScores
     /// Represents an entry in the high score table. This includes any associated name, the score, and an instance of the custom data type parameter.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class XMLScoreEntry<T> : IHighScoreEntry<T> where T : IHighScoreEntryCustomData
+    public class XMLScoreEntry<T> : ScoreEntry<T>,IXmlPersistable where T : IHighScoreEntryCustomData
     {
-        public T CustomData { get ; set ; }
-        public string Name { get; set; }
-        public int Score { get; set; }
-
-        public int CompareTo(IHighScoreEntry<T> other)
-        {
-            return Score.CompareTo(other.Score);
-        }
+      
         public XMLScoreEntry(String pName,int pScore,T pCustomData)
         {
             Name = pName;

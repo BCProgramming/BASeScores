@@ -27,12 +27,16 @@ namespace BASeCamp.BASeScores
             return new XElement(pNodeName);
         }
     }
-    public interface IHighScoreEntry<T> : IComparable<IHighScoreEntry<T>>,IXmlPersistable where T:IHighScoreEntryCustomData
+    public interface IHighScoreEntry : IComparable<IHighScoreEntry>
     {
-        T CustomData { get; set; }
         String Name { get; set; }
         int Score { get; set; }
 
+    }
+    public interface IHighScoreEntry<T> : IHighScoreEntry, IComparable<IHighScoreEntry<T>> where T:IHighScoreEntryCustomData
+    {
+        T CustomData { get; set; }
+        
 
     }
 }
