@@ -23,6 +23,24 @@ namespace BASeCamp.BASeScores
             return new XElement(pNodeName);
         }
     }
+    public class ScoreKeyComparer<TKey>
+        :
+            IComparer<TKey> where TKey : IComparable
+    {
+        #region IComparer<TKey> Members
+
+        public int Compare(TKey x, TKey y)
+        {
+            int result = y.CompareTo(x);
+
+            if (result == 0)
+                return 1;   // Handle equality as beeing greater
+            else
+                return result;
+        }
+
+        #endregion
+    }
     public class XMLHighScores<T> : IHighScoreList<T> where T:IHighScoreEntryCustomData
     {
         class DescComparer<T> : IComparer<T>
@@ -34,7 +52,7 @@ namespace BASeCamp.BASeScores
         }
         public String Name { get; set; }
         public int MaximumSize {  get { return 10; } }
-        SortedList<int,XMLScoreEntry<T>> ScoreEntries = new SortedList<int, XMLScoreEntry<T>>(new DescComparer<int>());
+        SortedList<int,XMLScoreEntry<T>> ScoreEntries = new SortedList<int, XMLScoreEntry<T>>(new ScoreKeyComparer<int>());
         public XElement GetXmlData(string pNodeName, object PersistenceData)
         {
            XElement buildnode = new XElement(pNodeName);
@@ -123,12 +141,13 @@ namespace BASeCamp.BASeScores
             int eligibleresult = IsEligible(Score);
             if (eligibleresult == -1) return null;
 
+            
             ScoreEntries.Add(Score,buildentry);
 
             //until we have MaximumSize items, remove the item with the smallest score.
             while(ScoreEntries.Count > MaximumSize)
             {
-                ScoreEntries.Remove(ScoreEntries.Last().Key);
+                ScoreEntries.RemoveAt(ScoreEntries.Count-1);
             }
 
             return buildentry;
