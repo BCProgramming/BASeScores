@@ -25,8 +25,6 @@ namespace BASeCamp.BASeScores
     }
     public interface IHighScoreList<T> : IHighScoreList, IXmlPersistable where T : IHighScoreEntryCustomData
     {
-        int MaximumSize { get; }
-    
         /// <summary>
         /// Retrieve all Scores present in this list.
         /// </summary>

@@ -1,5 +1,5 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -9,7 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>BASeCamp.BASeScores</RootNamespace>
     <AssemblyName>BASeScores</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <Platforms>AnyCPU;x64;x86</Platforms>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <EnableDefaultItems>false</EnableDefaultItems>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -66,16 +69,7 @@
     <ErrorReport>prompt</ErrorReport>
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
-  <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
-  </ItemGroup>
+
   <ItemGroup>
     <Compile Include="ScoreEntry.cs" />
     <Compile Include="XMLScoreEntry.cs" />
@@ -91,44 +85,9 @@
       <Name>Elementizer</Name>
     </ProjectReference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!--<Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />-->
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
   </PropertyGroup>
-  <Target Name="GetGitHash" BeforeTargets="WriteGitHash" Condition="'$(BuildHash)' == ''">
-    <PropertyGroup>
-      <!-- temp file for the git version (lives in "obj" folder)-->
-      <VerFile>$(IntermediateOutputPath)gitver</VerFile>
-    </PropertyGroup>
-    <!-- write the hash to the temp file.-->
-    <Exec Command="git -C &quot;$(ProjectDir.TrimEnd('\'))&quot; describe --long --always --dirty &gt; $(VerFile)" />
-    <!-- read the version into the GitVersion itemGroup-->
-    <ReadLinesFromFile File="$(VerFile)">
-      <Output TaskParameter="Lines" ItemName="GitVersion" />
-    </ReadLinesFromFile>
-    <!-- Set the BuildHash property to contain the GitVersion, if it wasn't already set.-->
-    <PropertyGroup>
-      <BuildHash>@(GitVersion)</BuildHash>
-    </PropertyGroup>
-  </Target>
-  <Target Name="WriteGitHash" BeforeTargets="CoreCompile">
-    <!-- names the obj/.../CustomAssemblyInfo.cs file -->
-    <PropertyGroup>
-      <CustomAssemblyInfoFile>$(IntermediateOutputPath)CustomAssemblyInfo.cs</CustomAssemblyInfoFile>
-    </PropertyGroup>
-    <!-- includes the CustomAssemblyInfo for compilation into your project -->
-    <ItemGroup>
-      <Compile Include="$(CustomAssemblyInfoFile)" />
-    </ItemGroup>
-    <!-- defines the AssemblyMetadata attribute that will be written -->
-    <ItemGroup>
-      <AssemblyAttributes Include="AssemblyMetadata">
-        <_Parameter1>GitHash</_Parameter1>
-        <_Parameter2>$(BuildHash)</_Parameter2>
-      </AssemblyAttributes>
-    </ItemGroup>
-    <!-- writes the attribute to the customAssemblyInfo file -->
-    <WriteCodeFragment Language="C#" OutputFile="$(CustomAssemblyInfoFile)" AssemblyAttributes="@(AssemblyAttributes)" />
-  </Target>
 </Project>
