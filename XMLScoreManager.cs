@@ -16,6 +16,16 @@ namespace BASeCamp.BASeScores
         Dictionary<String, XMLHighScores<T>> LoadedScoreSets = new Dictionary<string, XMLHighScores<T>>();
         public Func<string, XMLHighScores<T>> NewScoreListGenerator = GenerateNewScoreList;
         private String _FileName = null;
+
+        public String[] GetKeys()
+        {
+            return LoadedScoreSets.Keys.ToArray();
+        }
+        public Dictionary<String, XMLHighScores<T>> GetAllScoreSets()
+        {
+            return LoadedScoreSets;
+        }
+
         public XMLScoreManager(XElement Source,Object context)
         {
             LoadFromXElement(Source,context);
@@ -73,6 +83,10 @@ namespace BASeCamp.BASeScores
 
 
             return SavedRoot;
+        }
+        public IEnumerable<XMLHighScores<T>> AllScores()
+        {
+            return LoadedScoreSets.Values;
         }
 
         public XMLHighScores<T> this[String ScoreSet]

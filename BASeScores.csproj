@@ -89,5 +89,6 @@
   <PropertyGroup>
     <PreBuildEvent>
     </PreBuildEvent>
+    <PlatformTarget>AnyCPU</PlatformTarget>
   </PropertyGroup>
 </Project>
