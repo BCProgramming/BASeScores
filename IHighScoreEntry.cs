@@ -32,10 +32,12 @@ namespace BASeCamp.BASeScores
         String Name { get; set; }
         int Score { get; set; }
 
+        Object CustomData { get; }
+
     }
     public interface IHighScoreEntry<T> : IHighScoreEntry, IComparable<IHighScoreEntry<T>> where T:IHighScoreEntryCustomData
     {
-        T CustomData { get; set; }
+        new T CustomData { get; set; }
         
 
     }
